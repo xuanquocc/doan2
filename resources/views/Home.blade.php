@@ -7,11 +7,14 @@
     <meta name="description" content="">
     <title>Home</title>
     <meta name="generator" content="Nicepage 4.18.5, nicepage.com">
+    <link rel="stylesheet" href="{{ asset('/public/fontawesome-free-6.2.0/css/all.min.css')}}">
     @include('library.Home')
+    {{-- @include('library.library') --}}
     
     
   </head>
   <body class="u-body u-xl-mode" data-lang="en"><header class="u-clearfix u-header u-header" id="sec-520b"><div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+    <h1>hello : <i class="fa fa-address-book" style="font-size:48px;color:red"></i></h1>
         <a href="https://nicepage.com" class="u-image u-logo u-image-1">
           <img src="images/default-logo.png" class="u-logo-image u-logo-image-1">
         </a>
