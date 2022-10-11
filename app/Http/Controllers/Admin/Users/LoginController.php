@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use PharIo\Manifest\Email;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\Console\Input\Input;
 
 class LoginController extends Controller
 {
@@ -24,14 +25,16 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        if (Auth::attempt(
-            [
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-            ],
-            $request->input('remember')
-        )) {
-            return redirect()->route('admin');
+        // $hashed = Hash::make($request->password);
+        
+        $email = $request->email;
+        $password = $request->password;
+
+        $users = DB::table('users')->get();
+        foreach($users as $user) {
+            if (Hash::check($password, $user->password) && $email == $user->email) {
+                return redirect()->route('admin');
+            }
         }
         return redirect()->back();
     }
