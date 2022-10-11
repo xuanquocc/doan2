@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use PharIo\Manifest\Email;
 
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\Console\Input\Input;
+
 class LoginController extends Controller
 {
     public function index()
@@ -28,6 +31,7 @@ class LoginController extends Controller
         ]);
 
 
+
         if (Auth::attempt(
             [
                 'email' => $request->input('email'),
@@ -36,10 +40,23 @@ class LoginController extends Controller
             $request->input('remember')
         )) {
             return redirect()->route('admin');
+
+        // $hashed = Hash::make($request->password);
+        
+        $email = $request->email;
+        $password = $request->password;
+
+        $users = DB::table('users')->get();
+        foreach($users as $user) {
+            if (Hash::check($password, $user->password) && $email == $user->email) {
+                return redirect()->route('admin');
+            }
+
         }
 
 
         Session::flash('error', 'Tài khoản hoặc mật khẩu không đúng');
         return redirect()->back();
     }
+}
 }
