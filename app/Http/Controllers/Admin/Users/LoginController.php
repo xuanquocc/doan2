@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use PharIo\Manifest\Email;
 
 class LoginController extends Controller
@@ -19,10 +21,12 @@ class LoginController extends Controller
 
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'email' => 'required|email',
+            'email' => 'required|Email:filter',
             'password' => 'required'
         ]);
+
 
         if (Auth::attempt(
             [
@@ -33,6 +37,9 @@ class LoginController extends Controller
         )) {
             return redirect()->route('admin');
         }
+
+
+        Session::flash('error', 'Tài khoản hoặc mật khẩu không đúng');
         return redirect()->back();
     }
 }
